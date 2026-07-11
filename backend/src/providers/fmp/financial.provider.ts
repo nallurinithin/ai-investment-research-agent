@@ -4,10 +4,13 @@ import { env } from "../../infrastructure/config/env.js";
 import { CompanyProfile } from "../../domain/financial/company-profile.types.js";
 import { IncomeStatement } from "../../domain/financial/income-statement.types.js";
 import { BalanceSheet } from "../../domain/financial/balance-sheet.types.js";
+import { CashFlowStatement } from "../../domain/financial/cash-flow-statement.types.js";
+
 
 import { mapCompanyProfile } from "../../mappers/fmp/company-profile.mapper.js";
 import { mapIncomeStatement } from "../../mappers/fmp/income-statement.mapper.js";
 import { mapBalanceSheet } from "../../mappers/fmp/balance-sheet.mapper.js";
+import { mapCashFlowStatement } from "../../mappers/fmp/cash-flow-statement.mapper.js";
 
 const fmpClient = axios.create({
   baseURL: env.FMP_BASE_URL,
@@ -86,6 +89,26 @@ interface FmpBalanceSheetResponse {
   netDebt: number;
 }
 
+interface FmpCashFlowStatementResponse {
+  date: string;
+
+  operatingCashFlow: number;
+
+  capitalExpenditure: number;
+
+  freeCashFlow: number;
+
+  investmentsInPropertyPlantAndEquipment: number;
+
+  netCashProvidedByOperatingActivities: number;
+
+  netCashUsedForInvestingActivities: number;
+
+  netCashUsedProvidedByFinancingActivities: number;
+
+  netChangeInCash: number;
+}
+
 export async function getCompanyProfile(
   ticker: string
 ): Promise<CompanyProfile> {
@@ -127,5 +150,20 @@ export async function getBalanceSheets(
 
   return (response.data as FmpBalanceSheetResponse[]).map(
     mapBalanceSheet
+  );
+}
+
+export async function getCashFlowStatements(
+  ticker: string
+): Promise<CashFlowStatement[]> {
+  const response = await fmpClient.get("/cash-flow-statement", {
+    params: {
+      symbol: ticker,
+      limit: 5,
+    },
+  });
+
+  return (response.data as FmpCashFlowStatementResponse[]).map(
+    mapCashFlowStatement
   );
 }
