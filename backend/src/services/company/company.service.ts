@@ -1,4 +1,4 @@
-import { searchCompany } from "../../providers/fmp/fmp.provider.js";
+import { searchCompany } from "../../providers/fmp/company.provider.js";
 import { CompanyResolution } from "../../domain/company/company-resolution.types.js";
 
 export async function resolveCompany(

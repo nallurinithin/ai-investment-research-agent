@@ -1,4 +1,5 @@
 import { resolveCompany } from "../services/company/company.service.js";
+import { collectFinancialEvidence } from "../services/financial/financial.service.js";
 import { InvestmentRequest } from "../api/validators/investment.validator.js";
 import { CompanyResolution } from "../domain/company/company-resolution.types.js";
 
@@ -11,43 +12,50 @@ export interface GraphResult {
 export async function runInvestmentGraph(
   request: InvestmentRequest
 ): Promise<GraphResult> {
+  let ticker: string;
 
-  // Future Flow:
-  // User has already selected a ticker.
-  // Company resolution is skipped and research will begin.
+  // ---------------------------------------------
+  // Company already selected
+  // ---------------------------------------------
   if (request.ticker) {
-    return {
-      status: "success",
-      message: "Company selected successfully. Research workflow will start next.",
-      data: {
-        ticker: request.ticker,
-      },
-    };
+    ticker = request.ticker;
+  } else {
+    // ---------------------------------------------
+    // Resolve company name
+    // ---------------------------------------------
+    const resolution: CompanyResolution = await resolveCompany(
+      request.company!
+    );
+
+    switch (resolution.status) {
+      case "COMPANY_NOT_FOUND":
+        return {
+          status: "error",
+          message: "Company not found.",
+          data: null,
+        };
+
+      case "COMPANY_AMBIGUOUS":
+        return {
+          status: "ambiguity",
+          message: "Multiple companies found. Please select one.",
+          data: resolution.candidates,
+        };
+
+      case "COMPANY_RESOLVED":
+        ticker = resolution.company.symbol;
+        break;
+    }
   }
 
-  // No ticker means we must resolve the company name first.
-  const resolution: CompanyResolution = await resolveCompany(request.company!);
+  // ---------------------------------------------
+  // Financial Evidence Retrieval
+  // ---------------------------------------------
+  const financialEvidence = await collectFinancialEvidence(ticker);
 
-  switch (resolution.status) {
-    case "COMPANY_NOT_FOUND":
-      return {
-        status: "error",
-        message: "Company not found.",
-        data: null,
-      };
-
-    case "COMPANY_AMBIGUOUS":
-      return {
-        status: "ambiguity",
-        message: "Multiple companies found. Please select one.",
-        data: resolution.candidates,
-      };
-
-    case "COMPANY_RESOLVED":
-      return {
-        status: "success",
-        message: "Company resolved successfully.",
-        data: resolution.company,
-      };
-  }
+  return {
+    status: "success",
+    message: "Financial evidence collected successfully.",
+    data: financialEvidence,
+  };
 }
