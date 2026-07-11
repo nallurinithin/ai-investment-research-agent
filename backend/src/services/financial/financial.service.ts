@@ -8,6 +8,7 @@ import {
 } from "../../providers/fmp/financial.provider.js";
 
 import { FinancialEvidence } from "../../domain/financial/financial-evidence.types.js";
+import { collectNewsEvidence } from "../news/news.service.js";
 
 export async function collectFinancialEvidence(
   ticker: string
@@ -19,6 +20,7 @@ export async function collectFinancialEvidence(
     getCashFlowStatements(ticker),
     getFinancialRatios(ticker),
     getGrowthMetrics(ticker),
+    collectNewsEvidence(ticker),
   ]);
 
   const [
@@ -28,6 +30,7 @@ export async function collectFinancialEvidence(
     cashFlowStatementsResult,
     financialRatiosResult,
     growthMetricsResult,
+    newsResult,
   ] = results;
 
   if (profileResult.status === "rejected") {
@@ -54,6 +57,10 @@ export async function collectFinancialEvidence(
     console.warn("[FinancialService] Growth Metrics unavailable.");
   }
 
+  if (newsResult.status === "rejected") {
+    console.warn("[FinancialService] News unavailable.");
+}
+
   return {
     profile: profileResult.value,
 
@@ -78,5 +85,10 @@ export async function collectFinancialEvidence(
       growthMetricsResult.status === "fulfilled"
         ? growthMetricsResult.value
         : [],
+
+    news:
+      newsResult.status === "fulfilled"
+        ? newsResult.value
+        : { articles: [] },
   };
 }

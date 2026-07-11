@@ -10,4 +10,6 @@ export const env = {
   FMP_BASE_URL:
     process.env.FMP_BASE_URL ||
     "https://financialmodelingprep.com/stable",
+
+  TAVILY_API_KEY: process.env.TAVILY_API_KEY || "",
 };

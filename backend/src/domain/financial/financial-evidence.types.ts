@@ -4,6 +4,7 @@ import { BalanceSheet } from "./balance-sheet.types.js";
 import { CashFlowStatement } from "./cash-flow-statement.types.js";
 import { FinancialRatio } from "./financial-ratio.types.js";
 import { GrowthMetric } from "./growth-metrics.types.js";
+import { NewsEvidence } from "../news/news.types.js";
 
 export interface FinancialEvidence {
   profile: CompanyProfile;
@@ -18,9 +19,5 @@ export interface FinancialEvidence {
 
   growthMetrics: GrowthMetric[];
 
-  analystEstimates?: unknown;
-
-  dividendHistory?: unknown;
-
-  historicalPriceSummary?: unknown;
+  news: NewsEvidence;
 }

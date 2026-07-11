@@ -8,14 +8,13 @@ import { CashFlowStatement } from "../../domain/financial/cash-flow-statement.ty
 import { FinancialRatio } from "../../domain/financial/financial-ratio.types.js";
 import { GrowthMetric } from "../../domain/financial/growth-metrics.types.js";
 
-
 import { mapCompanyProfile } from "../../mappers/fmp/company-profile.mapper.js";
 import { mapIncomeStatement } from "../../mappers/fmp/income-statement.mapper.js";
 import { mapBalanceSheet } from "../../mappers/fmp/balance-sheet.mapper.js";
 import { mapCashFlowStatement } from "../../mappers/fmp/cash-flow-statement.mapper.js";
 import { mapFinancialRatio } from "../../mappers/fmp/financial-ratio.mapper.js";
 import { mapGrowthMetric } from "../../mappers/fmp/growth-metrics.mapper.js";
-
+ 
 const fmpClient = axios.create({
   baseURL: env.FMP_BASE_URL,
   timeout: 10000,
@@ -154,8 +153,7 @@ interface FmpGrowthMetricResponse {
 
   bookValueGrowth: number;
 }
-
-
+ 
 export async function getCompanyProfile(
   ticker: string
 ): Promise<CompanyProfile> {
@@ -244,3 +242,5 @@ export async function getGrowthMetrics(
     mapGrowthMetric
   );
 }
+
+ 
