@@ -2,6 +2,7 @@ import { resolveCompany } from "../services/company/company.service.js";
 import { collectFinancialEvidence } from "../services/financial/financial.service.js";
 import { InvestmentRequest } from "../api/validators/investment.validator.js";
 import { CompanyResolution } from "../domain/company/company-resolution.types.js";
+import { analyzeInvestment } from "../services/ai/ai.service.js";
 
 export interface GraphResult {
   status: string;
@@ -48,14 +49,29 @@ export async function runInvestmentGraph(
     }
   }
 
-  // ---------------------------------------------
-  // Financial Evidence Retrieval
-  // ---------------------------------------------
-  const financialEvidence = await collectFinancialEvidence(ticker);
+// ---------------------------------------------
+// Financial Evidence Retrieval
+// ---------------------------------------------
+const financialEvidence = await collectFinancialEvidence(ticker);
 
-  return {
-    status: "success",
-    message: "Financial evidence collected successfully.",
-    data: financialEvidence,
-  };
+
+// ---------------------------------------------
+// AI Investment Analysis
+// ---------------------------------------------
+const investmentAnalysis =
+  await analyzeInvestment(financialEvidence);
+
+return {
+  status: "success",
+  message: "Investment research completed successfully.",
+  data: {
+    financialEvidence,
+    investmentAnalysis,
+  },
+};
+
+   
+
 }
+
+ 
