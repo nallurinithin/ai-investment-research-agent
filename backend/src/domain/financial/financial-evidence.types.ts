@@ -1,26 +1,38 @@
 import { CompanyProfile } from "./company-profile.types.js";
 import { IncomeStatement } from "./income-statement.types.js";
+import { BalanceSheet } from "./balance-sheet.types.js";
 
 export interface FinancialEvidence {
   profile: CompanyProfile;
 
   incomeStatements: IncomeStatement[];
 
-  // Stage 3.6.3
-  financialHealth?: unknown;
+  balanceSheets: BalanceSheet[];
 
   // Stage 3.6.4
-  cashFlow?: unknown;
+  cashFlowStatements?: unknown;
 
   // Stage 3.6.5
-  valuation?: unknown;
+  financialRatios?: unknown;
 
   // Stage 3.6.6
-  market?: unknown;
+  keyMetrics?: unknown;
 
   // Stage 3.6.7
-  growth?: unknown;
+  enterpriseValue?: unknown;
 
   // Stage 3.6.8
-  dividend?: unknown;
+  growthMetrics?: unknown;
+
+  // Stage 3.6.9
+  analystEstimates?: unknown;
+
+  // Stage 3.6.10
+  earningsHistory?: unknown;
+
+  // Stage 3.6.11
+  dividendHistory?: unknown;
+
+  // Stage 3.6.12
+  historicalPriceSummary?: unknown;
 }

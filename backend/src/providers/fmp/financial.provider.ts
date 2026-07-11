@@ -3,9 +3,11 @@ import { env } from "../../infrastructure/config/env.js";
 
 import { CompanyProfile } from "../../domain/financial/company-profile.types.js";
 import { IncomeStatement } from "../../domain/financial/income-statement.types.js";
+import { BalanceSheet } from "../../domain/financial/balance-sheet.types.js";
 
 import { mapCompanyProfile } from "../../mappers/fmp/company-profile.mapper.js";
 import { mapIncomeStatement } from "../../mappers/fmp/income-statement.mapper.js";
+import { mapBalanceSheet } from "../../mappers/fmp/balance-sheet.mapper.js";
 
 const fmpClient = axios.create({
   baseURL: env.FMP_BASE_URL,
@@ -64,6 +66,26 @@ interface FmpIncomeStatementResponse {
   epsDiluted: number;
 }
 
+interface FmpBalanceSheetResponse {
+  date: string;
+
+  cashAndCashEquivalents: number;
+
+  totalCurrentAssets: number;
+
+  totalAssets: number;
+
+  totalCurrentLiabilities: number;
+
+  totalLiabilities: number;
+
+  totalDebt: number;
+
+  totalStockholdersEquity: number;
+
+  netDebt: number;
+}
+
 export async function getCompanyProfile(
   ticker: string
 ): Promise<CompanyProfile> {
@@ -90,5 +112,20 @@ export async function getIncomeStatements(
 
   return (response.data as FmpIncomeStatementResponse[]).map(
     mapIncomeStatement
+  );
+}
+
+export async function getBalanceSheets(
+  ticker: string
+): Promise<BalanceSheet[]> {
+  const response = await fmpClient.get("/balance-sheet-statement", {
+    params: {
+      symbol: ticker,
+      limit: 5,
+    },
+  });
+
+  return (response.data as FmpBalanceSheetResponse[]).map(
+    mapBalanceSheet
   );
 }
