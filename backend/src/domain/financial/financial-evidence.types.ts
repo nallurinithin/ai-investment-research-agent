@@ -1,6 +1,8 @@
 import { CompanyProfile } from "./company-profile.types.js";
 import { IncomeStatement } from "./income-statement.types.js";
 import { BalanceSheet } from "./balance-sheet.types.js";
+import { CashFlowStatement } from "./cash-flow-statement.types.js";
+import { FinancialRatio } from "./financial-ratio.types.js";
 
 export interface FinancialEvidence {
   profile: CompanyProfile;
@@ -9,11 +11,9 @@ export interface FinancialEvidence {
 
   balanceSheets: BalanceSheet[];
 
-  // Stage 3.6.4
-  cashFlowStatements?: unknown;
+  cashFlowStatements: CashFlowStatement[];
 
-  // Stage 3.6.5
-  financialRatios?: unknown;
+  financialRatios: FinancialRatio[];
 
   // Stage 3.6.6
   keyMetrics?: unknown;
@@ -34,5 +34,5 @@ export interface FinancialEvidence {
   dividendHistory?: unknown;
 
   // Stage 3.6.12
-  historicalPriceSummary?: unknown;
+ historicalPriceSummary?: unknown;
 }
