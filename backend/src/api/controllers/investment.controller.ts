@@ -12,7 +12,26 @@ export async function researchCompany(
 
     const result = await runInvestmentGraph(request);
 
-    res.status(200).json(result);
+    switch (result.status) {
+      case "error":
+        res.status(404).json(result);
+        return;
+
+      case "ambiguity":
+        res.status(409).json(result);
+        return;
+
+      case "success":
+        res.status(200).json(result);
+        return;
+
+      default:
+        res.status(500).json({
+          status: "error",
+          message: "Unexpected graph response.",
+        });
+        return;
+    }
   } catch (error) {
     next(error);
   }
