@@ -3,6 +3,7 @@ import { collectFinancialEvidence } from "../services/financial/financial.servic
 import { InvestmentRequest } from "../api/validators/investment.validator.js";
 import { CompanyResolution } from "../domain/company/company-resolution.types.js";
 import { analyzeInvestment } from "../services/ai/ai.service.js";
+import { generateInvestmentReport } from "../services/report/report.service.js";
 
 export interface GraphResult {
   status: string;
@@ -61,12 +62,20 @@ const financialEvidence = await collectFinancialEvidence(ticker);
 const investmentAnalysis =
   await analyzeInvestment(financialEvidence);
 
+const report =
+  await generateInvestmentReport(
+    financialEvidence,
+    investmentAnalysis
+  );
+
+
 return {
   status: "success",
-  message: "Investment research completed successfully.",
+  message: "Investment analysis completed successfully.",
   data: {
     financialEvidence,
     investmentAnalysis,
+    report,
   },
 };
 
