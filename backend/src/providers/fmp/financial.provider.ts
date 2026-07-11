@@ -6,6 +6,7 @@ import { IncomeStatement } from "../../domain/financial/income-statement.types.j
 import { BalanceSheet } from "../../domain/financial/balance-sheet.types.js";
 import { CashFlowStatement } from "../../domain/financial/cash-flow-statement.types.js";
 import { FinancialRatio } from "../../domain/financial/financial-ratio.types.js";
+import { GrowthMetric } from "../../domain/financial/growth-metrics.types.js";
 
 
 import { mapCompanyProfile } from "../../mappers/fmp/company-profile.mapper.js";
@@ -13,6 +14,7 @@ import { mapIncomeStatement } from "../../mappers/fmp/income-statement.mapper.js
 import { mapBalanceSheet } from "../../mappers/fmp/balance-sheet.mapper.js";
 import { mapCashFlowStatement } from "../../mappers/fmp/cash-flow-statement.mapper.js";
 import { mapFinancialRatio } from "../../mappers/fmp/financial-ratio.mapper.js";
+import { mapGrowthMetric } from "../../mappers/fmp/growth-metrics.mapper.js";
 
 const fmpClient = axios.create({
   baseURL: env.FMP_BASE_URL,
@@ -135,6 +137,25 @@ interface FmpFinancialRatioResponse {
   netProfitMargin: number;
 }
 
+interface FmpGrowthMetricResponse {
+  date: string;
+
+  revenueGrowth: number;
+
+  grossProfitGrowth: number;
+
+  operatingIncomeGrowth: number;
+
+  netIncomeGrowth: number;
+
+  epsGrowth: number;
+
+  freeCashFlowGrowth: number;
+
+  bookValueGrowth: number;
+}
+
+
 export async function getCompanyProfile(
   ticker: string
 ): Promise<CompanyProfile> {
@@ -206,5 +227,20 @@ export async function getFinancialRatios(
 
   return (response.data as FmpFinancialRatioResponse[]).map(
     mapFinancialRatio
+  );
+}
+
+export async function getGrowthMetrics(
+  ticker: string
+): Promise<GrowthMetric[]> {
+  const response = await fmpClient.get("/financial-growth", {
+    params: {
+      symbol: ticker,
+      limit: 5,
+    },
+  });
+
+  return (response.data as FmpGrowthMetricResponse[]).map(
+    mapGrowthMetric
   );
 }

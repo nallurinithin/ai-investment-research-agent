@@ -4,6 +4,7 @@ import {
   getBalanceSheets,
   getCashFlowStatements,
   getFinancialRatios,
+  getGrowthMetrics,
 } from "../../providers/fmp/financial.provider.js";
 
 import { FinancialEvidence } from "../../domain/financial/financial-evidence.types.js";
@@ -17,6 +18,7 @@ export async function collectFinancialEvidence(
     getBalanceSheets(ticker),
     getCashFlowStatements(ticker),
     getFinancialRatios(ticker),
+    getGrowthMetrics(ticker),
   ]);
 
   const [
@@ -25,6 +27,7 @@ export async function collectFinancialEvidence(
     balanceSheetsResult,
     cashFlowStatementsResult,
     financialRatiosResult,
+    growthMetricsResult,
   ] = results;
 
   if (profileResult.status === "rejected") {
@@ -46,6 +49,10 @@ export async function collectFinancialEvidence(
   if (financialRatiosResult.status === "rejected") {
     console.warn("[FinancialService] Financial Ratios unavailable.");
   }
+  
+  if (growthMetricsResult.status === "rejected") {
+    console.warn("[FinancialService] Growth Metrics unavailable.");
+  }
 
   return {
     profile: profileResult.value,
@@ -65,6 +72,11 @@ export async function collectFinancialEvidence(
     financialRatios:
       financialRatiosResult.status === "fulfilled"
         ? financialRatiosResult.value
+        : [],
+
+    growthMetrics:
+      growthMetricsResult.status === "fulfilled"
+        ? growthMetricsResult.value
         : [],
   };
 }
