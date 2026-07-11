@@ -9,6 +9,7 @@ import {
 
 import { FinancialEvidence } from "../../domain/financial/financial-evidence.types.js";
 import { collectNewsEvidence } from "../news/news.service.js";
+import { collectCompetitorEvidence } from "../competitor/competitor.service.js";
 
 export async function collectFinancialEvidence(
   ticker: string
@@ -21,6 +22,7 @@ export async function collectFinancialEvidence(
     getFinancialRatios(ticker),
     getGrowthMetrics(ticker),
     collectNewsEvidence(ticker),
+    collectCompetitorEvidence(ticker),
   ]);
 
   const [
@@ -31,6 +33,7 @@ export async function collectFinancialEvidence(
     financialRatiosResult,
     growthMetricsResult,
     newsResult,
+    competitorsResult,
   ] = results;
 
   if (profileResult.status === "rejected") {
@@ -60,6 +63,10 @@ export async function collectFinancialEvidence(
   if (newsResult.status === "rejected") {
     console.warn("[FinancialService] News unavailable.");
 }
+ 
+if (competitorsResult.status === "rejected") {
+    console.warn("[FinancialService] Competitors unavailable.");
+  } 
 
   return {
     profile: profileResult.value,
@@ -90,5 +97,10 @@ export async function collectFinancialEvidence(
       newsResult.status === "fulfilled"
         ? newsResult.value
         : { articles: [] },
+
+    competitors:
+      competitorsResult.status === "fulfilled"
+        ? competitorsResult.value
+        : [],
   };
 }

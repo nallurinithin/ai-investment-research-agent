@@ -5,6 +5,7 @@ import { CashFlowStatement } from "./cash-flow-statement.types.js";
 import { FinancialRatio } from "./financial-ratio.types.js";
 import { GrowthMetric } from "./growth-metrics.types.js";
 import { NewsEvidence } from "../news/news.types.js";
+import { Competitor } from "../competitor/competitor.types.js";
 
 export interface FinancialEvidence {
   profile: CompanyProfile;
@@ -20,4 +21,6 @@ export interface FinancialEvidence {
   growthMetrics: GrowthMetric[];
 
   news: NewsEvidence;
+
+  competitors: Competitor[];
 }
