@@ -1,13 +1,20 @@
-import { getCompanyProfile } from "../../providers/fmp/financial.provider.js";
+import {
+  getCompanyProfile,
+  getIncomeStatements,
+} from "../../providers/fmp/financial.provider.js";
 
 import { FinancialEvidence } from "../../domain/financial/financial-evidence.types.js";
 
 export async function collectFinancialEvidence(
   ticker: string
 ): Promise<FinancialEvidence> {
-  const profile = await getCompanyProfile(ticker);
+  const [profile, incomeStatements] = await Promise.all([
+    getCompanyProfile(ticker),
+    getIncomeStatements(ticker),
+  ]);
 
   return {
     profile,
+    incomeStatements,
   };
 }
