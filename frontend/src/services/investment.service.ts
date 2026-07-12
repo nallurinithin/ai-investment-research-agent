@@ -35,7 +35,7 @@ export async function downloadPdfReport(
   investmentAnalysis: InvestmentAnalysis
 ): Promise<void> {
   const response = await axios.post(
-    "http://localhost:3000/api/v1/report/pdf",
+    `${import.meta.env.VITE_API_BASE_URL}/report/pdf`,
     {
       financialEvidence,
       investmentAnalysis,
