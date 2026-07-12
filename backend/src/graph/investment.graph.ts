@@ -4,6 +4,7 @@ import { InvestmentRequest } from "../api/validators/investment.validator.js";
 import { CompanyResolution } from "../domain/company/company-resolution.types.js";
 import { analyzeInvestment } from "../services/ai/ai.service.js";
 import { generateInvestmentReport } from "../services/report/report.service.js";
+import { evaluateRecommendation } from "../services/recommendation/recommendation.service.js";
 
 export interface GraphResult {
   status: string;
@@ -25,9 +26,8 @@ export async function runInvestmentGraph(
     // ---------------------------------------------
     // Resolve company name
     // ---------------------------------------------
-    const resolution: CompanyResolution = await resolveCompany(
-      request.company!
-    );
+    const resolution: CompanyResolution =
+      await resolveCompany(request.company!);
 
     switch (resolution.status) {
       case "COMPANY_NOT_FOUND":
@@ -40,7 +40,8 @@ export async function runInvestmentGraph(
       case "COMPANY_AMBIGUOUS":
         return {
           status: "ambiguity",
-          message: "Multiple companies found. Please select one.",
+          message:
+            "Multiple companies found. Please select one.",
           data: resolution.candidates,
         };
 
@@ -50,37 +51,50 @@ export async function runInvestmentGraph(
     }
   }
 
-// ---------------------------------------------
-// Financial Evidence Retrieval
-// ---------------------------------------------
-const financialEvidence = await collectFinancialEvidence(ticker);
+  // ---------------------------------------------
+  // Financial Evidence Retrieval
+  // ---------------------------------------------
+  const financialEvidence =
+    await collectFinancialEvidence(ticker);
 
+  // ---------------------------------------------
+  // AI Investment Analysis
+  // ---------------------------------------------
+  const investmentAnalysis =
+    await analyzeInvestment(financialEvidence);
 
-// ---------------------------------------------
-// AI Investment Analysis
-// ---------------------------------------------
-const investmentAnalysis =
-  await analyzeInvestment(financialEvidence);
+  // ---------------------------------------------
+  // Recommendation Engine
+  // ---------------------------------------------
+  const recommendation =
+    evaluateRecommendation(
+      financialEvidence,
+      investmentAnalysis.confidence
+    );
 
-const report =
-  await generateInvestmentReport(
-    financialEvidence,
-    investmentAnalysis
-  );
+  investmentAnalysis.recommendation =
+    recommendation.recommendation;
 
+  investmentAnalysis.evidenceCompleteness =
+    recommendation.evidenceCompleteness;
 
-return {
-  status: "success",
-  message: "Investment analysis completed successfully.",
-  data: {
-    financialEvidence,
-    investmentAnalysis,
-    report,
-  },
-};
+  // ---------------------------------------------
+  // Report Generation
+  // ---------------------------------------------
+  const report =
+    await generateInvestmentReport(
+      financialEvidence,
+      investmentAnalysis
+    );
 
-   
-
+  return {
+    status: "success",
+    message:
+      "Investment analysis completed successfully.",
+    data: {
+      financialEvidence,
+      investmentAnalysis,
+      report,
+    },
+  };
 }
-
- 

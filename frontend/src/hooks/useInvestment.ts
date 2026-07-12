@@ -5,9 +5,7 @@ import {
   researchCompanyByTicker,
 } from "../services/investment.service";
 
-import type {
-  CompanyOption,
-} from "../types/company";
+import type { CompanyOption } from "../types/company";
 
 import type {
   InvestmentReport,
@@ -23,6 +21,9 @@ export function useInvestment() {
 
   const [companies, setCompanies] =
     useState<CompanyOption[]>([]);
+
+  const [selectedCompany, setSelectedCompany] =
+    useState("");
 
   const [error, setError] =
     useState<string | null>(null);
@@ -42,6 +43,14 @@ export function useInvestment() {
       switch (response.status) {
         case "success":
           setReport(response.data);
+
+          setSelectedCompany(
+            response.data.financialEvidence.profile.companyName +
+              " (" +
+              response.data.financialEvidence.profile.symbol +
+              ")"
+          );
+
           setStatus("resolved");
           return;
 
@@ -57,7 +66,10 @@ export function useInvestment() {
           return;
       }
     } catch {
-      setError("Unable to connect to server.");
+      setError(
+        "Unable to connect to server."
+      );
+
       setStatus("error");
     }
   }
@@ -77,6 +89,14 @@ export function useInvestment() {
       switch (response.status) {
         case "success":
           setReport(response.data);
+
+          setSelectedCompany(
+            response.data.financialEvidence.profile.companyName +
+              " (" +
+              response.data.financialEvidence.profile.symbol +
+              ")"
+          );
+
           setStatus("resolved");
           return;
 
@@ -100,15 +120,24 @@ export function useInvestment() {
     setCompanies([]);
     setReport(null);
     setError(null);
+    setSelectedCompany("");
   }
 
   return {
     status,
+
     report,
+
     companies,
+
+    selectedCompany,
+
     error,
+
     analyzeCompany,
+
     selectCompany,
+
     reset,
   };
 }

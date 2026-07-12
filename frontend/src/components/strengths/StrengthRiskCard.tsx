@@ -11,87 +11,122 @@ export default function StrengthRiskCard({
     <section
       style={{
         display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "24px",
-        marginBottom: "24px",
+        gridTemplateColumns:
+          "repeat(auto-fit,minmax(420px,1fr))",
+        gap: "28px",
       }}
     >
-      {/* Strengths */}
+      <Card
+        title="Key Strengths"
+        accent="#10B981"
+        items={strengths}
+        emptyMessage="No significant strengths identified."
+      />
 
+      <Card
+        title="Key Risks"
+        accent="#EF4444"
+        items={risks}
+        emptyMessage="No significant risks identified."
+      />
+    </section>
+  );
+}
+
+interface CardProps {
+  title: string;
+  accent: string;
+  items: string[];
+  emptyMessage: string;
+}
+
+function Card({
+  title,
+  accent,
+  items,
+  emptyMessage,
+}: CardProps) {
+  return (
+    <section
+      style={{
+        background:
+          "rgba(255,255,255,0.04)",
+        backdropFilter: "blur(20px)",
+        border:
+          "1px solid rgba(255,255,255,0.08)",
+        borderRadius: "24px",
+        padding: "32px",
+        boxShadow:
+          "0 24px 60px rgba(0,0,0,.25)",
+      }}
+    >
       <div
         style={{
-          background: "#F0FDF4",
-          borderRadius: "14px",
-          padding: "24px",
-          boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+          display: "inline-block",
+          padding: "8px 14px",
+          borderRadius: "999px",
+          background: `${accent}20`,
+          border: `1px solid ${accent}55`,
+          color: accent,
+          fontSize: "13px",
+          fontWeight: 600,
+          marginBottom: "22px",
         }}
       >
-        <h2
-          style={{
-            marginTop: 0,
-            marginBottom: "20px",
-            color: "#166534",
-          }}
-        >
-          Strengths
-        </h2>
-
-        <ul
-          style={{
-            margin: 0,
-            paddingLeft: "20px",
-            lineHeight: 1.8,
-          }}
-        >
-          {strengths.length === 0 ? (
-            <li>No strengths available.</li>
-          ) : (
-            strengths.map((strength, index) => (
-              <li key={index}>
-                {strength}
-              </li>
-            ))
-          )}
-        </ul>
+        {title.toUpperCase()}
       </div>
 
-      {/* Risks */}
-
       <div
         style={{
-          background: "#FEF2F2",
-          borderRadius: "14px",
-          padding: "24px",
-          boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "18px",
         }}
       >
-        <h2
-          style={{
-            marginTop: 0,
-            marginBottom: "20px",
-            color: "#991B1B",
-          }}
-        >
-          Risks
-        </h2>
+        {items.length === 0 ? (
+          <p
+            style={{
+              margin: 0,
+              color: "#A1A1AA",
+              lineHeight: 1.8,
+            }}
+          >
+            {emptyMessage}
+          </p>
+        ) : (
+          items.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "14px",
+              }}
+            >
+              <div
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  marginTop: "8px",
+                  borderRadius: "999px",
+                  background: accent,
+                  flexShrink: 0,
+                }}
+              />
 
-        <ul
-          style={{
-            margin: 0,
-            paddingLeft: "20px",
-            lineHeight: 1.8,
-          }}
-        >
-          {risks.length === 0 ? (
-            <li>No risks available.</li>
-          ) : (
-            risks.map((risk, index) => (
-              <li key={index}>
-                {risk}
-              </li>
-            ))
-          )}
-        </ul>
+              <p
+                style={{
+                  margin: 0,
+                  color: "#D4D4D8",
+                  lineHeight: 1.8,
+                  fontSize: "15px",
+                }}
+              >
+                {item}
+              </p>
+            </div>
+          ))
+        )}
       </div>
     </section>
   );

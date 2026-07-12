@@ -4,8 +4,9 @@ import RecommendationCard from "../recommendation/RecommendationCard";
 import ExecutiveSummary from "../summary/ExecutiveSummary";
 import StrengthRiskCard from "../strengths/StrengthRiskCard";
 import CompanyProfileCard from "../evidence/CompanyProfileCard";
-import CompetitorSnapshot from "../evidence/CompetitorSnapshot";
+import FinancialSnapshot from "../evidence/FinancialSnapshot";
 import NewsHighlights from "../evidence/NewsHighlights";
+import CompetitorSnapshot from "../evidence/CompetitorSnapshot";
 import ReportViewer from "../report/ReportViewer";
 
 interface InvestmentDashboardProps {
@@ -18,79 +19,175 @@ export default function InvestmentDashboard({
   return (
     <main
       style={{
-        maxWidth: "1200px",
-        margin: "40px auto",
         display: "flex",
         flexDirection: "column",
-        gap: "24px",
+        gap: "40px",
       }}
     >
-      <RecommendationCard
-        recommendation={
-          report.investmentAnalysis.recommendation
-        }
-        confidence={
-          report.investmentAnalysis.confidence
-        }
-      />
+      {/* =======================================
+          ANALYSIS
+      ======================================== */}
 
-      <ExecutiveSummary
-        summary={
-          report.investmentAnalysis.summary
-        }
-      />
+      <section id="analysis">
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+          }}
+        >
+          <RecommendationCard
+            recommendation={
+              report.investmentAnalysis
+                .recommendation
+            }
+            confidence={
+              report.investmentAnalysis
+                .confidence
+            }
+            evidenceCompleteness={
+              report.investmentAnalysis
+                .evidenceCompleteness
+            }
+          />
 
-      <StrengthRiskCard
-        strengths={
-          report.investmentAnalysis.strengths
-        }
-        risks={
-          report.investmentAnalysis.risks
-        }
-      />
+          <ExecutiveSummary
+            summary={
+              report.investmentAnalysis
+                .summary
+            }
+          />
 
-      <CompanyProfileCard
-        companyName={
-          report.financialEvidence.profile.companyName
-        }
-        symbol={
-          report.financialEvidence.profile.symbol
-        }
-        sector={
-          report.financialEvidence.profile.sector
-        }
-        industry={
-          report.financialEvidence.profile.industry
-        }
-        ceo={
-          report.financialEvidence.profile.ceo
-        }
-        marketCap={
-          report.financialEvidence.profile.marketCap
-        }
-        employees={
-          report.financialEvidence.profile.employees
-        }
-        website={
-          report.financialEvidence.profile.website
-        }
-      />
+          <ReportViewer
+            financialEvidence={
+              report.financialEvidence
+            }
+            investmentAnalysis={
+              report.investmentAnalysis
+            }
+          />
+        </div>
+      </section>
 
-      <CompetitorSnapshot
-        competitors={
-          report.financialEvidence.competitors
-        }
-      />
+      {/* =======================================
+          STRENGTHS & RISKS
+      ======================================== */}
 
-      <NewsHighlights
-        articles={
-          report.financialEvidence.news.articles
-        }
-      />
+      <section id="strengths-risks">
+        <StrengthRiskCard
+          strengths={
+            report.investmentAnalysis
+              .strengths
+          }
+          risks={
+            report.investmentAnalysis
+              .risks
+          }
+        />
+      </section>
 
-      <ReportViewer
-        report={report.report}
-      />
+      {/* =======================================
+          SNAPSHOTS
+      ======================================== */}
+
+      <section
+        id="snapshots"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "24px",
+        }}
+      >
+        <CompanyProfileCard
+          companyName={
+            report.financialEvidence.profile
+              .companyName
+          }
+          symbol={
+            report.financialEvidence.profile
+              .symbol
+          }
+          sector={
+            report.financialEvidence.profile
+              .sector
+          }
+          industry={
+            report.financialEvidence.profile
+              .industry
+          }
+          ceo={
+            report.financialEvidence.profile
+              .ceo
+          }
+          marketCap={
+            report.financialEvidence.profile
+              .marketCap
+          }
+          employees={
+            report.financialEvidence.profile
+              .employees
+          }
+          website={
+            report.financialEvidence.profile
+              .website
+          }
+        />
+
+        <FinancialSnapshot
+          revenue={
+            report.financialEvidence
+              .incomeStatements[0]
+              ?.revenue ?? 0
+          }
+          netIncome={
+            report.financialEvidence
+              .incomeStatements[0]
+              ?.netIncome ?? 0
+          }
+          operatingCashFlow={
+            report.financialEvidence
+              .cashFlowStatements[0]
+              ?.operatingCashFlow ?? 0
+          }
+          currentRatio={
+            report.financialEvidence
+              .financialRatios[0]
+              ?.currentRatio ?? 0
+          }
+          returnOnEquity={
+            report.financialEvidence
+              .financialRatios[0]
+              ?.returnOnEquity ?? 0
+          }
+        />
+      </section>
+
+      {/* =======================================
+          MARKET INTELLIGENCE
+      ======================================== */}
+
+      <section
+        id="market-intelligence"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "24px",
+        }}
+      >
+        <NewsHighlights
+          articles={
+            report.financialEvidence.news
+              .articles
+          }
+        />
+
+        <CompetitorSnapshot
+          competitors={
+            report.financialEvidence
+              .competitors
+          }
+        />
+      </section>
     </main>
   );
 }

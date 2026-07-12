@@ -9,30 +9,33 @@ export default function ExecutiveSummary({
     <section
       style={{
         background: "#FFFFFF",
-        borderRadius: "14px",
-        padding: "24px",
-        marginBottom: "24px",
-        boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+        borderRadius: "18px",
+        padding: "28px 32px",
+        boxShadow:
+          "0 12px 30px rgba(15,23,42,0.08)",
       }}
     >
-      <h2
+      <p
         style={{
-          marginTop: 0,
-          marginBottom: "18px",
-          fontSize: "24px",
-          color: "#0F172A",
+          margin: 0,
+          marginBottom: "10px",
+          color: "#64748B",
+          fontWeight: 600,
+          textTransform: "uppercase",
+          letterSpacing: "1px",
+          fontSize: "14px",
         }}
       >
         Executive Summary
-      </h2>
+      </p>
 
       <p
         style={{
-          color: "#334155",
-          lineHeight: 1.8,
-          fontSize: "16px",
           margin: 0,
-          whiteSpace: "pre-wrap",
+          color: "#1E293B",
+          fontSize: "17px",
+          lineHeight: 1.9,
+          textAlign: "justify",
         }}
       >
         {summary}

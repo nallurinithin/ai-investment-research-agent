@@ -22,47 +22,88 @@ export default function CompanyProfileCard({
   return (
     <section
       style={{
-        background: "#FFFFFF",
-        borderRadius: "14px",
-        padding: "24px",
-        marginBottom: "24px",
-        boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+        background:
+          "rgba(255,255,255,0.04)",
+        backdropFilter: "blur(20px)",
+        border:
+          "1px solid rgba(255,255,255,0.08)",
+        borderRadius: "24px",
+        padding: "36px",
+        boxShadow:
+          "0 24px 60px rgba(0,0,0,.25)",
       }}
     >
-      <h2
+      <div
         style={{
-          marginTop: 0,
-          marginBottom: "20px",
-          color: "#0F172A",
+          display: "inline-block",
+          padding: "8px 14px",
+          borderRadius: "999px",
+          background:
+            "rgba(37,99,235,.15)",
+          border:
+            "1px solid rgba(37,99,235,.25)",
+          color: "#93C5FD",
+          fontSize: "13px",
+          fontWeight: 600,
+          marginBottom: "24px",
         }}
       >
-        Company Snapshot
+        COMPANY SNAPSHOT
+      </div>
+
+      <h2
+        style={{
+          margin: 0,
+          marginBottom: "30px",
+          color: "#FAFAFA",
+          fontSize: "30px",
+          fontWeight: 700,
+          letterSpacing: "-0.8px",
+        }}
+      >
+        {companyName}
       </h2>
 
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          rowGap: "16px",
-          columnGap: "40px",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(260px,1fr))",
+          gap: "18px",
         }}
       >
-        <Info label="Company" value={companyName} />
-        <Info label="Ticker" value={symbol} />
-        <Info label="Sector" value={sector} />
-        <Info label="Industry" value={industry} />
-        <Info label="CEO" value={ceo} />
+        <Info
+          label="Ticker"
+          value={symbol}
+        />
+
+        <Info
+          label="Sector"
+          value={sector}
+        />
+
+        <Info
+          label="Industry"
+          value={industry}
+        />
+
+        <Info
+          label="Chief Executive Officer"
+          value={ceo}
+        />
+
         <Info
           label="Employees"
           value={employees.toLocaleString()}
         />
+
         <Info
-          label="Market Cap"
+          label="Market Capitalization"
           value={`$${marketCap.toLocaleString()}`}
         />
-        <Info
-          label="Website"
-          value={website}
+
+        <WebsiteInfo
+          website={website}
         />
       </div>
     </section>
@@ -79,12 +120,24 @@ function Info({
   value,
 }: InfoProps) {
   return (
-    <div>
+    <div
+      style={{
+        padding: "20px",
+        borderRadius: "16px",
+        background:
+          "rgba(255,255,255,0.03)",
+        border:
+          "1px solid rgba(255,255,255,0.06)",
+      }}
+    >
       <div
         style={{
-          fontSize: "13px",
-          color: "#64748B",
-          marginBottom: "4px",
+          color: "#71717A",
+          fontSize: "12px",
+          textTransform: "uppercase",
+          letterSpacing: "1px",
+          fontWeight: 600,
+          marginBottom: "10px",
         }}
       >
         {label}
@@ -92,12 +145,61 @@ function Info({
 
       <div
         style={{
+          color: "#FAFAFA",
           fontWeight: 600,
-          color: "#0F172A",
+          fontSize: "16px",
+          lineHeight: 1.6,
+          wordBreak: "break-word",
         }}
       >
         {value}
       </div>
+    </div>
+  );
+}
+
+function WebsiteInfo({
+  website,
+}: {
+  website: string;
+}) {
+  return (
+    <div
+      style={{
+        padding: "20px",
+        borderRadius: "16px",
+        background:
+          "rgba(255,255,255,0.03)",
+        border:
+          "1px solid rgba(255,255,255,0.06)",
+      }}
+    >
+      <div
+        style={{
+          color: "#71717A",
+          fontSize: "12px",
+          textTransform: "uppercase",
+          letterSpacing: "1px",
+          fontWeight: 600,
+          marginBottom: "10px",
+        }}
+      >
+        Website
+      </div>
+
+      <a
+        href={website}
+        target="_blank"
+        rel="noreferrer"
+        style={{
+          color: "#60A5FA",
+          textDecoration: "none",
+          fontWeight: 600,
+          wordBreak: "break-word",
+        }}
+      >
+        {website}
+      </a>
     </div>
   );
 }

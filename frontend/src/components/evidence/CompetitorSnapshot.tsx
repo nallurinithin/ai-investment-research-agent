@@ -15,88 +15,204 @@ export default function CompetitorSnapshot({
   return (
     <section
       style={{
-        background: "#FFFFFF",
-        borderRadius: "14px",
-        padding: "24px",
-        marginBottom: "24px",
-        boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+        background:
+          "rgba(255,255,255,0.04)",
+        backdropFilter: "blur(20px)",
+        border:
+          "1px solid rgba(255,255,255,0.08)",
+        borderRadius: "24px",
+        padding: "36px",
+        boxShadow:
+          "0 24px 60px rgba(0,0,0,.25)",
       }}
     >
-      <h2
+      <div
         style={{
-          marginTop: 0,
-          marginBottom: "20px",
-          color: "#0F172A",
+          display: "inline-block",
+          padding: "8px 14px",
+          borderRadius: "999px",
+          background:
+            "rgba(37,99,235,.15)",
+          border:
+            "1px solid rgba(37,99,235,.25)",
+          color: "#93C5FD",
+          fontSize: "13px",
+          fontWeight: 600,
+          marginBottom: "24px",
         }}
       >
-        Competitor Snapshot
+        MARKET INTELLIGENCE
+      </div>
+
+      <h2
+        style={{
+          margin: 0,
+          marginBottom: "30px",
+          color: "#FAFAFA",
+          fontSize: "30px",
+          fontWeight: 700,
+          letterSpacing: "-0.8px",
+        }}
+      >
+        Top Competitors
       </h2>
 
       {competitors.length === 0 ? (
         <p
           style={{
-            color: "#64748B",
             margin: 0,
+            color: "#A1A1AA",
           }}
         >
           No competitor information available.
         </p>
       ) : (
-        <table
+        <div
           style={{
-            width: "100%",
-            borderCollapse: "collapse",
+            overflowX: "auto",
+            borderRadius: "18px",
+            border:
+              "1px solid rgba(255,255,255,0.06)",
           }}
         >
-          <thead>
-            <tr
-              style={{
-                background: "#F8FAFC",
-              }}
-            >
-              <th style={headerStyle}>Company</th>
-              <th style={headerStyle}>Ticker</th>
-              <th style={headerStyle}>Price</th>
-              <th style={headerStyle}>Market Cap</th>
-            </tr>
-          </thead>
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              minWidth: "700px",
+            }}
+          >
+            <thead>
+              <tr
+                style={{
+                  background:
+                    "rgba(255,255,255,0.03)",
+                }}
+              >
+                <HeaderCell>
+                  Company
+                </HeaderCell>
 
-          <tbody>
-            {competitors.map((company) => (
-              <tr key={company.symbol}>
-                <td style={cellStyle}>
-                  {company.companyName}
-                </td>
+                <HeaderCell>
+                  Symbol
+                </HeaderCell>
 
-                <td style={cellStyle}>
-                  {company.symbol}
-                </td>
+                <HeaderCell align="right">
+                  Share Price
+                </HeaderCell>
 
-                <td style={cellStyle}>
-                  ${company.price.toFixed(2)}
-                </td>
-
-                <td style={cellStyle}>
-                  ${company.marketCap.toLocaleString()}
-                </td>
+                <HeaderCell align="right">
+                  Market Cap
+                </HeaderCell>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {competitors.map(
+                (company) => (
+                  <tr
+                    key={
+                      company.symbol
+                    }
+                    style={{
+                      borderTop:
+                        "1px solid rgba(255,255,255,0.06)",
+                    }}
+                  >
+                    <Cell>
+                      <div
+                        style={{
+                          color:
+                            "#FAFAFA",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {
+                          company.companyName
+                        }
+                      </div>
+                    </Cell>
+
+                    <Cell>
+                      <span
+                        style={{
+                          color:
+                            "#60A5FA",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {
+                          company.symbol
+                        }
+                      </span>
+                    </Cell>
+
+                    <Cell align="right">
+                      $
+                      {company.price.toLocaleString(
+                        undefined,
+                        {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }
+                      )}
+                    </Cell>
+
+                    <Cell align="right">
+                      $
+                      {company.marketCap.toLocaleString()}
+                    </Cell>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
       )}
     </section>
   );
 }
 
-const headerStyle = {
-  textAlign: "left" as const,
-  padding: "14px",
-  borderBottom: "1px solid #E2E8F0",
-  color: "#334155",
-};
+function HeaderCell({
+  children,
+  align = "left",
+}: {
+  children: React.ReactNode;
+  align?: "left" | "right";
+}) {
+  return (
+    <th
+      style={{
+        padding: "18px 22px",
+        color: "#71717A",
+        textTransform: "uppercase",
+        fontSize: "12px",
+        letterSpacing: "1px",
+        fontWeight: 600,
+        textAlign: align,
+      }}
+    >
+      {children}
+    </th>
+  );
+}
 
-const cellStyle = {
-  padding: "14px",
-  borderBottom: "1px solid #F1F5F9",
-  color: "#0F172A",
-};
+function Cell({
+  children,
+  align = "left",
+}: {
+  children: React.ReactNode;
+  align?: "left" | "right";
+}) {
+  return (
+    <td
+      style={{
+        padding: "20px 22px",
+        color: "#D4D4D8",
+        textAlign: align,
+      }}
+    >
+      {children}
+    </td>
+  );
+}

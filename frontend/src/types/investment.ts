@@ -11,8 +11,30 @@ export type InvestmentStatus =
   | "ambiguous"
   | "error";
 
+export interface IncomeStatement {
+  revenue: number;
+
+  netIncome: number;
+}
+
+export interface CashFlowStatement {
+  operatingCashFlow: number;
+}
+
+export interface FinancialRatio {
+  currentRatio: number;
+
+  returnOnEquity: number;
+}
+
 export interface InvestmentEvidence {
   profile: CompanyProfile;
+
+  incomeStatements: IncomeStatement[];
+
+  cashFlowStatements: CashFlowStatement[];
+
+  financialRatios: FinancialRatio[];
 
   competitors: Competitor[];
 

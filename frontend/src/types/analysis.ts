@@ -12,4 +12,6 @@ export interface InvestmentAnalysis {
   recommendation: string;
 
   confidence: number;
+
+  evidenceCompleteness: number;
 }

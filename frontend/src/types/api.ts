@@ -1,3 +1,5 @@
+import type { InvestmentReport } from "./investment";
+
 export interface ApiCompanyCandidate {
   symbol: string;
 
@@ -15,13 +17,7 @@ export interface ApiSuccessResponse {
 
   message: string;
 
-  data: {
-    financialEvidence: unknown;
-
-    investmentAnalysis: unknown;
-
-    report: string;
-  };
+  data: InvestmentReport;
 }
 
 export interface ApiAmbiguityResponse {

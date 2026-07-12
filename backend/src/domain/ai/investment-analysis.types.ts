@@ -1,4 +1,4 @@
-import { Recommendation } from "./recommendation.enum.js";
+import { FinalRecommendation } from "../../services/recommendation/recommendation.service.js";
 
 export interface InvestmentAnalysis {
   summary: string;
@@ -11,7 +11,9 @@ export interface InvestmentAnalysis {
 
   newsImpact: string;
 
-  recommendation: Recommendation;
+  recommendation: FinalRecommendation;
 
   confidence: number;
+
+  evidenceCompleteness: number;
 }
